@@ -1,0 +1,6 @@
+prepare
+shower
+buy groceries
+cook
+prepare noodles
+play ruby
