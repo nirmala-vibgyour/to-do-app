@@ -1,25 +1,34 @@
 import functions
 import FreeSimpleGUI as sg
 import time
+import os
+
+if not os.path.exists('todos.txt'):
+    with open('todos.txt', 'w') as file:
+        pass
 
 sg.theme("Black")
 
 clock = sg.Text('', key="clock")
 label = sg.Text("Enter in a to-do")
 input_box = sg.InputText(tooltip="Enter todo", key="todo")
-add_button = sg.Button("Add", size=10)
+add_button = sg.Button(size=5, image_source="add.png", mouseover_colors="LightGreen",
+                       tooltip="Add To-do", key="Add")
 list_box = sg.Listbox(values=functions.get_todos(), key="todos",
                       enable_events=True, size=(45, 10))
-edit_button = sg.Button("Edit")
-complete_button = sg.Button("Complete")
-exit_button = sg.Button("EXit")
+edit_button = sg.Button(size=5, image_source="edit.png", mouseover_colors="LightBlue",
+                       tooltip="Edit To-do", key="Edit")
+complete_button = sg.Button(size=5, image_source="complete.png", mouseover_colors="LightBlue",
+                       tooltip="Complete To-do", key="Complete")
+exit_button = sg.Button(size=5, image_source="exit.png", mouseover_colors="LightBlue",
+                       tooltip="Exit", key="Exit")
 
 # [label, input_box] in a row. a list eqv to a row.
 window = sg.Window("To-Do App",
                    layout=[[clock],
                             [label],
                             [input_box, add_button],
-                            [list_box, edit_button],
+                            [list_box, edit_button, complete_button],
                             [exit_button]],
                    font=('Helvetica', 20))
 while True:
@@ -27,6 +36,7 @@ while True:
     event, values = window.read(timeout=200)
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
     match event:
+        # event is taken as label or key
         case "Add":
             todos = functions.get_todos()
             new_todo = values['todo'] + "\n"
